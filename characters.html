@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Characters - AnimeVerse</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-red: #DC143C;
+            --dark-red: #8B0000;
+            --electric-red: #FF1744;
+            --bg-black: #000000;
+            --bg-charcoal: #1a1a1a;
+            --bg-dark-gray: #2d2d2d;
+            --text-silver: #C0C0C0;
+            --text-white: #FFFFFF;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-black);
+            color: var(--text-white);
+            overflow-x: hidden;
+        }
+        
+        .nav-bar {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--primary-red);
+        }
+        
+        .logo {
+            font-family: 'Orbitron', monospace;
+            font-weight: 900;
+            font-size: 1.5rem;
+            background: linear-gradient(45deg, var(--primary-red), var(--electric-red));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .nav-link {
+            color: var(--text-silver);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-link:hover {
+            color: var(--electric-red);
+            transform: translateY(-2px);
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--electric-red);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .section-title {
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            font-size: clamp(2rem, 5vw, 3rem);
+            text-align: center;
+            margin: 6rem 0 2rem 0;
+            background: linear-gradient(45deg, var(--primary-red), var(--electric-red));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .filter-sidebar {
+            background: var(--bg-dark-gray);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid var(--primary-red);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+        
+        .filter-group {
+            margin-bottom: 2rem;
+        }
+        
+        .filter-title {
+            font-family: 'Orbitron', monospace;
+            font-weight: 600;
+            color: var(--electric-red);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .filter-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 0.5rem;
+            border-radius: 5px;
+        }
+        
+        .filter-option:hover {
+            background: rgba(220, 20, 60, 0.1);
+            transform: translateX(5px);
+        }
+        
+        .filter-option input[type="checkbox"] {
+            margin-right: 0.5rem;
+            accent-color: var(--primary-red);
+        }
+        
+        .character-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .character-card {
+            background: var(--bg-dark-gray);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .character-card:hover {
+            border-color: var(--primary-red);
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(220, 20, 60, 0.3);
+        }
+        
+        .character-card img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .character-card:hover img {
+            transform: scale(1.1);
+        }
+        
+        .character-info {
+            padding: 1.5rem;
+        }
+        
+        .character-name {
+            font-family: 'Orbitron', monospace;
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: var(--electric-red);
+            margin-bottom: 0.5rem;
+        }
+        
+        .character-series {
+            color: var(--text-silver);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .character-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .power-level {
+            background: var(--primary-red);
+            color: var(--text-white);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .favorite-btn {
+            background: none;
+            border: none;
+            color: var(--text-silver);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .favorite-btn:hover {
+            color: var(--electric-red);
+            transform: scale(1.2);
+        }
+        
+        .favorite-btn.active {
+            color: var(--electric-red);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--bg-dark-gray);
+            border-radius: 20px;
+            border: 2px solid var(--primary-red);
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 2rem 1rem 2rem;
+            border-bottom: 1px solid var(--bg-charcoal);
+        }
+        
+        .modal-title {
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--electric-red);
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--text-silver);
+            font-size: 2rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .close-modal:hover {
+            color: var(--electric-red);
+        }
+        
+        .modal-body {
+            padding: 2rem;
+        }
+        
+        .character-detail-img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .character-bio {
+            color: var(--text-silver);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .character-abilities {
+            background: var(--bg-charcoal);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .ability-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--bg-dark-gray);
+        }
+        
+        .ability-name {
+            font-weight: 600;
+            color: var(--text-white);
+        }
+        
+        .ability-level {
+            background: var(--primary-red);
+            color: var(--text-white);
+            padding: 0.2rem 0.6rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+        
+        .search-bar {
+            background: var(--bg-dark-gray);
+            border: 1px solid var(--primary-red);
+            border-radius: 25px;
+            padding: 1rem 1.5rem;
+            width: 100%;
+            color: var(--text-white);
+            font-size: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .search-bar:focus {
+            outline: none;
+            border-color: var(--electric-red);
+            box-shadow: 0 0 10px rgba(255, 23, 68, 0.3);
+        }
+        
+        .search-bar::placeholder {
+            color: var(--text-silver);
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-silver);
+        }
+        
+        .no-results h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-red);
+        }
+        
+        @media (max-width: 768px) {
+            .filter-sidebar {
+                position: static;
+                margin-bottom: 2rem;
+            }
+            
+            .character-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 1rem;
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav-bar fixed w-full top-0 z-50">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="logo">ANIMEVERSE</div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="nav-link">Home</a>
+                    <a href="characters.html" class="nav-link text-red-400">Characters</a>
+                    <a href="episodes.html" class="nav-link">Episodes</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 pt-24">
+        <h1 class="section-title">Character Gallery</h1>
+        
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Filter Sidebar -->
+            <div class="lg:w-1/4">
+                <div class="filter-sidebar">
+                    <h3 class="filter-title">Filters</h3>
+                    
+                    <div class="filter-group">
+                        <h4 class="text-lg font-semibold mb-2 text-white">Search</h4>
+                        <input type="text" id="character-search" class="search-bar" placeholder="Search characters...">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <h4 class="text-lg font-semibold mb-2 text-white">Anime Series</h4>
+                        <div class="filter-option">
+                            <input type="checkbox" id="series-all" checked>
+                            <label for="series-all">All Series</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="series-naruto">
+                            <label for="series-naruto">Naruto</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="series-onepiece">
+                            <label for="series-onepiece">One Piece</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="series-demonslayer">
+                            <label for="series-demonslayer">Demon Slayer</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="series-mha">
+                            <label for="series-mha">My Hero Academia</label>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <h4 class="text-lg font-semibold mb-2 text-white">Power Level</h4>
+                        <div class="filter-option">
+                            <input type="checkbox" id="power-all" checked>
+                            <label for="power-all">All Levels</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="power-s">
+                            <label for="power-s">S-Rank</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="power-a">
+                            <label for="power-a">A-Rank</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="power-b">
+                            <label for="power-b">B-Rank</label>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <h4 class="text-lg font-semibold mb-2 text-white">Character Type</h4>
+                        <div class="filter-option">
+                            <input type="checkbox" id="type-all" checked>
+                            <label for="type-all">All Types</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="type-protagonist">
+                            <label for="type-protagonist">Protagonist</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="type-antagonist">
+                            <label for="type-antagonist">Antagonist</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="type-support">
+                            <label for="type-support">Support</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Character Grid -->
+            <div class="lg:w-3/4">
+                <div class="character-grid" id="character-grid">
+                    <!-- Characters will be populated by JavaScript -->
+                </div>
+                
+                <div class="no-results hidden" id="no-results">
+                    <h3>No Characters Found</h3>
+                    <p>Try adjusting your filters or search terms.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Character Detail Modal -->
+    <div id="character-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modal-title">Character Details</h2>
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Modal content will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Character data
+        const characters = [
+            {
+                id: 1,
+                name: "Naruto Uzumaki",
+                series: "Naruto",
+                image: "./resources/char-1.jpg",
+                powerLevel: "S",
+                type: "protagonist",
+                bio: "A young ninja from the Hidden Leaf Village with dreams of becoming Hokage. Possesses the Nine-Tails fox spirit within him.",
+                abilities: [
+                    { name: "Shadow Clone Jutsu", level: "S" },
+                    { name: "Rasengan", level: "A" },
+                    { name: "Sage Mode", level: "S" },
+                    { name: "Kurama Mode", level: "S" }
+                ]
+            },
+            {
+                id: 2,
+                name: "Monkey D. Luffy",
+                series: "One Piece",
+                image: "./resources/char-2.jpg",
+                powerLevel: "S",
+                type: "protagonist",
+                bio: "The captain of the Straw Hat Pirates with the power of the Gum-Gum Fruit. Dreams of becoming the Pirate King.",
+                abilities: [
+                    { name: "Gum-Gum Powers", level: "A" },
+                    { name: "Haki", level: "S" },
+                    { name: "Gear Techniques", level: "S" },
+                    { name: "Conqueror's Haki", level: "S" }
+                ]
+            },
+            {
+                id: 3,
+                name: "Tanjiro Kamado",
+                series: "Demon Slayer",
+                image: "./resources/char-3.jpg",
+                powerLevel: "A",
+                type: "protagonist",
+                bio: "A kind-hearted boy who becomes a demon slayer to save his sister and avenge his family.",
+                abilities: [
+                    { name: "Water Breathing", level: "A" },
+                    { name: "Sun Breathing", level: "S" },
+                    { name: "Enhanced Sense", level: "B" },
+                    { name: "Demon Slayer Mark", level: "A" }
+                ]
+            },
+            {
+                id: 4,
+                name: "Izuku Midoriya",
+                series: "My Hero Academia",
+                image: "./resources/char-4.jpg",
+                powerLevel: "A",
+                type: "protagonist",
+                bio: "A quirkless boy who inherits the powerful One For All quirk and dreams of becoming the greatest hero.",
+                abilities: [
+                    { name: "One For All", level: "S" },
+                    { name: "Full Cowling", level: "A" },
+                    { name: "Detroit Smash", level: "A" },
+                    { name: "Blackwhip", level: "A" }
+                ]
+            },
+            {
+                id: 5,
+                name: "Sasuke Uchiha",
+                series: "Naruto",
+                image: "./resources/char-5.jpg",
+                powerLevel: "S",
+                type: "antagonist",
+                bio: "A talented ninja from the Uchiha clan seeking power to avenge his family. Naruto's rival and friend.",
+                abilities: [
+                    { name: "Sharingan", level: "S" },
+                    { name: "Chidori", level: "A" },
+                    { name: "Susanoo", level: "S" },
+                    { name: "Rinnegan", level: "S" }
+                ]
+            },
+            {
+                id: 6,
+                name: "Nezuko Kamado",
+                series: "Demon Slayer",
+                image: "./resources/char-6.jpg",
+                powerLevel: "A",
+                type: "support",
+                bio: "Tanjiro's sister who was turned into a demon but retains her human emotions and protects her brother.",
+                abilities: [
+                    { name: "Demon Physiology", level: "A" },
+                    { name: "Blood Demon Art", level: "A" },
+                    { name: "Size Manipulation", level: "B" },
+                    { name: "Sun Resistance", level: "S" }
+                ]
+            },
+            {
+                id: 7,
+                name: "All Might",
+                series: "My Hero Academia",
+                image: "./resources/char-7.jpg",
+                powerLevel: "S",
+                type: "support",
+                bio: "The Symbol of Peace and world's greatest hero. He passes on his powerful quirk to Midoriya.",
+                abilities: [
+                    { name: "One For All", level: "S" },
+                    { name: "Texas Smash", level: "S" },
+                    { name: "California Smash", level: "S" },
+                    { name: "United States of Smash", level: "S" }
+                ]
+            },
+            {
+                id: 8,
+                name: "Roronoa Zoro",
+                series: "One Piece",
+                image: "./resources/char-8.jpg",
+                powerLevel: "A",
+                type: "support",
+                bio: "The swordsman of the Straw Hat Pirates with a goal to become the world's greatest swordsman.",
+                abilities: [
+                    { name: "Three Sword Style", level: "A" },
+                    { name: "Haki", level: "A" },
+                    { name: "Asura", level: "S" },
+                    { name: "Conqueror's Haki", level: "A" }
+                ]
+            }
+        ];
+
+        let filteredCharacters = [...characters];
+        let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            renderCharacters();
+            setupFilters();
+            setupSearch();
+        });
+
+        function renderCharacters() {
+            const grid = document.getElementById('character-grid');
+            const noResults = document.getElementById('no-results');
+            
+            if (filteredCharacters.length === 0) {
+                grid.innerHTML = '';
+                noResults.classList.remove('hidden');
+                return;
+            }
+            
+            noResults.classList.add('hidden');
+            
+            grid.innerHTML = filteredCharacters.map(char => `
+                <div class="character-card" data-id="${char.id}">
+                    <img src="${char.image}" alt="${char.name}" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDIwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjMkQyRDJEIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iMTUwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjQzBDMEMwIiBmb250LWZhbWlseT0iSW50ZXIiIGZvbnQtc2l6ZT0iMTQiPkFuaW1lIENoYXJhY3RlcjwvdGV4dD4KPC9zdmc+'">
+                    <div class="character-info">
+                        <div class="character-name">${char.name}</div>
+                        <div class="character-series">${char.series}</div>
+                        <div class="character-stats">
+                            <span class="power-level">${char.powerLevel}-Rank</span>
+                            <button class="favorite-btn ${favorites.includes(char.id) ? 'active' : ''}" onclick="toggleFavorite(${char.id})">
+                                ${favorites.includes(char.id) ? '❤️' : '🤍'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Add click events for character cards
+            document.querySelectorAll('.character-card').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    if (!e.target.classList.contains('favorite-btn')) {
+                        const charId = parseInt(this.dataset.id);
+                        showCharacterModal(charId);
+                    }
+                });
+            });
+            
+            // Animate cards
+            anime({
+                targets: '.character-card',
+                opacity: [0, 1],
+                translateY: [30, 0],
+                delay: anime.stagger(100),
+                duration: 600,
+                easing: 'easeOutQuad'
+            });
+        }
+
+        function setupFilters() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', applyFilters);
+            });
+        }
+
+        function setupSearch() {
+            const searchInput = document.getElementById('character-search');
+            searchInput.addEventListener('input', applyFilters);
+        }
+
+        function applyFilters() {
+            const searchTerm = document.getElementById('character-search').value.toLowerCase();
+            const seriesFilters = Array.from(document.querySelectorAll('[id^="series-"]:checked')).map(cb => cb.id.replace('series-', ''));
+            const powerFilters = Array.from(document.querySelectorAll('[id^="power-"]:checked')).map(cb => cb.id.replace('power-', ''));
+            const typeFilters = Array.from(document.querySelectorAll('[id^="type-"]:checked')).map(cb => cb.id.replace('type-', ''));
+            
+            filteredCharacters = characters.filter(char => {
+                const matchesSearch = char.name.toLowerCase().includes(searchTerm) || char.series.toLowerCase().includes(searchTerm);
+                const matchesSeries = seriesFilters.includes('all') || seriesFilters.includes(char.series.toLowerCase().replace(/\s+/g, ''));
+                const matchesPower = powerFilters.includes('all') || powerFilters.includes(char.powerLevel.toLowerCase());
+                const matchesType = typeFilters.includes('all') || typeFilters.includes(char.type);
+                
+                return matchesSearch && matchesSeries && matchesPower && matchesType;
+            });
+            
+            renderCharacters();
+        }
+
+        function toggleFavorite(charId) {
+            const index = favorites.indexOf(charId);
+            if (index > -1) {
+                favorites.splice(index, 1);
+            } else {
+                favorites.push(charId);
+            }
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+            renderCharacters();
+        }
+
+        function showCharacterModal(charId) {
+            const character = characters.find(char => char.id === charId);
+            if (!character) return;
+            
+            const modal = document.getElementById('character-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalBody = document.getElementById('modal-body');
+            
+            modalTitle.textContent = character.name;
+            modalBody.innerHTML = `
+                <img src="${character.image}" alt="${character.name}" class="character-detail-img" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjMkQyRDJEIi8+Cjx0ZXh0IHg9IjIwMCIgeT0iMTUwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjQzBDMEMwIiBmb250LWZhbWlseT0iSW50ZXIiIGZvbnQtc2l6ZT0iMTQiPkFuaW1lIENoYXJhY3RlcjwvdGV4dD4KPC9zdmc+'">
+                <div class="character-bio">${character.bio}</div>
+                <div class="character-abilities">
+                    <h4 class="text-lg font-semibold mb-3 text-white">Abilities</h4>
+                    ${character.abilities.map(ability => `
+                        <div class="ability-item">
+                            <span class="ability-name">${ability.name}</span>
+                            <span class="ability-level">${ability.level}</span>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="mt-4 text-center">
+                    <button class="favorite-btn text-3xl ${favorites.includes(character.id) ? 'active' : ''}" onclick="toggleFavorite(${character.id})">
+                        ${favorites.includes(character.id) ? '❤️' : '🤍'}
+                    </button>
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+            
+            // Animate modal
+            anime({
+                targets: '.modal-content',
+                scale: [0.8, 1],
+                opacity: [0, 1],
+                duration: 300,
+                easing: 'easeOutQuad'
+            });
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('character-modal');
+            anime({
+                targets: '.modal-content',
+                scale: [1, 0.8],
+                opacity: [1, 0],
+                duration: 200,
+                easing: 'easeInQuad',
+                complete: () => {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function(e) {
+            const modal = document.getElementById('character-modal');
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Episodes - AnimeVerse</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-red: #DC143C;
+            --dark-red: #8B0000;
+            --electric-red: #FF1744;
+            --bg-black: #000000;
+            --bg-charcoal: #1a1a1a;
+            --bg-dark-gray: #2d2d2d;
+            --text-silver: #C0C0C0;
+            --text-white: #FFFFFF;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-black);
+            color: var(--text-white);
+            overflow-x: hidden;
+        }
+        
+        .nav-bar {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--primary-red);
+        }
+        
+        .logo {
+            font-family: 'Orbitron', monospace;
+            font-weight: 900;
+            font-size: 1.5rem;
+            background: linear-gradient(45deg, var(--primary-red), var(--electric-red));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .nav-link {
+            color: var(--text-silver);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-link:hover {
+            color: var(--electric-red);
+            transform: translateY(-2px);
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--electric-red);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .section-title {
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            font-size: clamp(2rem, 5vw, 3rem);
+            text-align: center;
+            margin: 6rem 0 2rem 0;
+            background: linear-gradient(45deg, var(--primary-red), var(--electric-red));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .series-selector {
+            background: var(--bg-dark-gray);
+            border: 1px solid var(--primary-red);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .series-dropdown {
+            background: var(--bg-charcoal);
+            border: 1px solid var(--primary-red);
+            border-radius: 10px;
+            padding: 1rem;
+            width: 100%;
+            color: var(--text-white);
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .series-dropdown:focus {
+            outline: none;
+            border-color: var(--electric-red);
+            box-shadow: 0 0 15px rgba(255, 23, 68, 0.3);
+        }
+        
+        .series-info {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: var(--bg-charcoal);
+            border-radius: 10px;
+        }
+        
+        .series-poster {
+            width: 120px;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 2px solid var(--primary-red);
+        }
+        
+        .series-details h3 {
+            font-family: 'Orbitron', monospace;
+            font-weight: 600;
+            font-size: 1.5rem;
+            color: var(--electric-red);
+            margin-bottom: 0.5rem;
+        }
+        
+        .series-details p {
+            color: var(--text-silver);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        
+        .series-stats {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--electric-red);
+            display: block;
+        }
+        
+        .stat-label {
+            color: var(--text-silver);
+            font-size: 0.9rem;
+        }
+        
+        .progress-section {
+            background: var(--bg-dark-gray);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid var(--primary-red);
+            margin-bottom: 2rem;
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .progress-title {
+            font-family: 'Orbitron', monospace;
+            font-weight: 600;
+            font-size: 1.3rem;
+            color: var(--electric-red);
+        }
+        
+        .progress-bar-container {
+            background: var(--bg-charcoal);
+            border-radius: 25px;
+            height: 20px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+        
+        .progress-bar {
+            background: linear-gradient(45deg, var(--primary-red), var(--electric-red));
+            height: 100%;
+            border-radius: 25px;
+            transition: width 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .progress-text {
+            text-align: center;
+            color: var(--text-silver);
+            font-weight: 500;
+        }
+        
+        .episodes-container {
+            background: var(--bg-dark-gray);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid var(--primary-red);
+        }
+        
+        .episodes-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .episodes-title {
+            font-family: 'Orbitron', monospace;
+            font-weight: 600;
+            font-size: 1.5rem;
+            color: var(--electric-red);
+        }
+        
+        .episode-controls {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .control-btn {
+            background: var(--primary-red);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            color: var(--text-white);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .control-btn:hover {
+            background: var(--electric-red);
+            transform: translateY(-2px);
+        }
+        
+        .episode-list {
+            display: grid;
+            gap: 1rem;
+        }
+        
+        .episode-item {
+            background: var(--bg-charcoal);
+            border-radius: 10px;
+            padding: 1.5rem;
+            border: 1px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .episode-item:hover {
+            border-color: var(--primary-red);
+            transform: translateX(10px);
+        }
+        
+        .episode-item.watched {
+            border-color: #00ff00;
+            background: rgba(0, 255, 0, 0.05);
+        }
+        
+        .episode-item.in-watchlist {
+            border-color: #ffa500;
+            background: rgba(255, 165, 0, 0.05);
+        }
+        
+        .episode-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .episode-number {
+            font-family: 'Orbitron', monospace;
+            font-weight: 600;
+            color: var(--electric-red);
+            font-size: 1.1rem;
+        }
+        
+        .episode-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .action-btn {
+            background: none;
+            border: none;
+            color: var(--text-silver);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+            padding: 0.3rem;
+            border-radius: 5px;
+        }
+        
+        .action-btn:hover {
+            color: var(--electric-red);
+            background: rgba(220, 20, 60, 0.1);
+        }
+        
+        .action-btn.active {
+            color: var(--electric-red);
+        }
+        
+        .episode-title {
+            font-weight: 600;
+            color: var(--text-white);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .episode-description {
+            color: var(--text-silver);
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+        
+        .episode-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .episode-duration {
+            color: var(--text-silver);
+            font-size: 0.9rem;
+        }
+        
+        .rating-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .star-rating {
+            display: flex;
+            gap: 0.2rem;
+        }
+        
+        .star {
+            color: #666;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1.2rem;
+        }
+        
+        .star:hover,
+        .star.active {
+            color: #ffd700;
+            transform: scale(1.1);
+        }
+        
+        .chart-container {
+            background: var(--bg-dark-gray);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid var(--primary-red);
+            margin-bottom: 2rem;
+            height: 400px;
+        }
+        
+        .watchlist-section {
+            background: var(--bg-dark-gray);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid var(--primary-red);
+            margin-top: 2rem;
+        }
+        
+        .watchlist-items {
+            display: grid;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .watchlist-item {
+            background: var(--bg-charcoal);
+            border-radius: 10px;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #ffa500;
+        }
+        
+        .watchlist-info {
+            flex: 1;
+        }
+        
+        .watchlist-title {
+            font-weight: 600;
+            color: var(--text-white);
+            margin-bottom: 0.3rem;
+        }
+        
+        .watchlist-series {
+            color: var(--text-silver);
+            font-size: 0.9rem;
+        }
+        
+        .remove-watchlist {
+            background: #ff4444;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .remove-watchlist:hover {
+            background: #ff0000;
+            transform: scale(1.05);
+        }
+        
+        .empty-watchlist {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-silver);
+        }
+        
+        .empty-watchlist h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--primary-red);
+        }
+        
+        @media (max-width: 768px) {
+            .series-info {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .series-stats {
+                justify-content: center;
+            }
+            
+            .episodes-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .episode-controls {
+                justify-content: center;
+            }
+            
+            .episode-meta {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav-bar fixed w-full top-0 z-50">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="logo">ANIMEVERSE</div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="nav-link">Home</a>
+                    <a href="characters.html" class="nav-link">Characters</a>
+                    <a href="episodes.html" class="nav-link text-red-400">Episodes</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 pt-24">
+        <h1 class="section-title">Episode Tracker</h1>
+        
+        <!-- Series Selector -->
+        <div class="series-selector">
+            <select id="series-select" class="series-dropdown">
+                <option value="">Select an Anime Series</option>
+                <option value="naruto">Naruto</option>
+                <option value="onepiece">One Piece</option>
+                <option value="demonslayer">Demon Slayer</option>
+                <option value="mha">My Hero Academia</option>
+                <option value="attackontitan">Attack on Titan</option>
+            </select>
+            
+            <div id="series-info" class="series-info hidden">
+                <img id="series-poster" class="series-poster" src="" alt="">
+                <div class="series-details">
+                    <h3 id="series-title">Series Title</h3>
+                    <p id="series-description">Series description will appear here.</p>
+                    <div class="series-stats">
+                        <div class="stat-item">
+                            <span class="stat-value" id="total-episodes">0</span>
+                            <span class="stat-label">Total Episodes</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value" id="watched-episodes">0</span>
+                            <span class="stat-label">Watched</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value" id="progress-percentage">0%</span>
+                            <span class="stat-label">Progress</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Section -->
+        <div id="progress-section" class="progress-section hidden">
+            <div class="progress-header">
+                <h3 class="progress-title">Watching Progress</h3>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="main-progress-bar" style="width: 0%"></div>
+            </div>
+            <div class="progress-text" id="progress-text">0% Complete</div>
+        </div>
+
+        <!-- Progress Chart -->
+        <div id="chart-section" class="chart-container hidden">
+            <div id="progress-chart" style="width: 100%; height: 100%;"></div>
+        </div>
+
+        <!-- Episodes Container -->
+        <div id="episodes-container" class="episodes-container hidden">
+            <div class="episodes-header">
+                <h2 class="episodes-title">Episodes</h2>
+                <div class="episode-controls">
+                    <button class="control-btn" onclick="markAllWatched()">Mark All Watched</button>
+                    <button class="control-btn" onclick="markAllUnwatched()">Mark All Unwatched</button>
+                    <button class="control-btn" onclick="toggleWatchlistView()">Show Watchlist</button>
+                </div>
+            </div>
+            
+            <div class="episode-list" id="episode-list">
+                <!-- Episodes will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Watchlist Section -->
+        <div id="watchlist-section" class="watchlist-section hidden">
+            <h2 class="episodes-title">My Watchlist</h2>
+            <div class="watchlist-items" id="watchlist-items">
+                <div class="empty-watchlist">
+                    <h3>Your Watchlist is Empty</h3>
+                    <p>Add episodes to your watchlist to see them here.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Series data
+        const seriesData = {
+            naruto: {
+                title: "Naruto",
+                description: "A young ninja from the Hidden Leaf Village with dreams of becoming Hokage. Follow Naruto's journey as he overcomes challenges and protects his friends.",
+                poster: "./resources/poster-1.jpg",
+                totalEpisodes: 220,
+                episodes: []
+            },
+            onepiece: {
+                title: "One Piece",
+                description: "The legendary pirate adventure continues as Monkey D. Luffy and his crew search for the ultimate treasure, the One Piece.",
+                poster: "./resources/poster-2.jpg",
+                totalEpisodes: 1070,
+                episodes: []
+            },
+            demonslayer: {
+                title: "Demon Slayer",
+                description: "A kind-hearted boy becomes a demon slayer to save his sister and avenge his family in this epic tale of courage and determination.",
+                poster: "./resources/poster-3.jpg",
+                totalEpisodes: 44,
+                episodes: []
+            },
+            mha: {
+                title: "My Hero Academia",
+                description: "In a world where most people have superpowers called Quirks, follow Izuku Midoriya's journey to become the greatest hero.",
+                poster: "./resources/char-4.jpg",
+                totalEpisodes: 138,
+                episodes: []
+            },
+            attackontitan: {
+                title: "Attack on Titan",
+                description: "Humanity's fight for survival against giant humanoid creatures known as Titans in a post-apocalyptic world.",
+                poster: "./resources/char-1.jpg",
+                totalEpisodes: 75,
+                episodes: []
+            }
+        };
+
+        // Load saved data from localStorage
+        let watchedEpisodes = JSON.parse(localStorage.getItem('watchedEpisodes')) || {};
+        let episodeRatings = JSON.parse(localStorage.getItem('episodeRatings')) || {};
+        let watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
+
+        let currentSeries = null;
+        let showingWatchlist = false;
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            setupSeriesSelector();
+            generateEpisodeData();
+        });
+
+        function generateEpisodeData() {
+            Object.keys(seriesData).forEach(seriesKey => {
+                const series = seriesData[seriesKey];
+                series.episodes = [];
+                
+                for (let i = 1; i <= series.totalEpisodes; i++) {
+                    series.episodes.push({
+                        number: i,
+                        title: `Episode ${i}`,
+                        description: `This is episode ${i} of ${series.title}. Exciting adventures await in this thrilling installment of the series.`,
+                        duration: `${Math.floor(Math.random() * 10) + 20} min`,
+                        rating: episodeRatings[`${seriesKey}_${i}`] || 0
+                    });
+                }
+            });
+        }
+
+        function setupSeriesSelector() {
+            const selector = document.getElementById('series-select');
+            selector.addEventListener('change', function() {
+                const selectedSeries = this.value;
+                if (selectedSeries) {
+                    loadSeries(selectedSeries);
+                } else {
+                    hideSeriesContent();
+                }
+            });
+        }
+
+        function loadSeries(seriesKey) {
+            currentSeries = seriesKey;
+            const series = seriesData[seriesKey];
+            
+            // Show series info
+            document.getElementById('series-info').classList.remove('hidden');
+            document.getElementById('series-poster').src = series.poster;
+            document.getElementById('series-title').textContent = series.title;
+            document.getElementById('series-description').textContent = series.description;
+            document.getElementById('total-episodes').textContent = series.totalEpisodes;
+            
+            // Update stats
+            updateSeriesStats();
+            
+            // Show progress and episodes
+            document.getElementById('progress-section').classList.remove('hidden');
+            document.getElementById('chart-section').classList.remove('hidden');
+            document.getElementById('episodes-container').classList.remove('hidden');
+            
+            // Render episodes
+            renderEpisodes();
+            
+            // Initialize chart
+            initProgressChart();
+        }
+
+        function updateSeriesStats() {
+            if (!currentSeries) return;
+            
+            const series = seriesData[currentSeries];
+            const watchedCount = watchedEpisodes[currentSeries] ? watchedEpisodes[currentSeries].length : 0;
+            const progressPercentage = Math.round((watchedCount / series.totalEpisodes) * 100);
+            
+            document.getElementById('watched-episodes').textContent = watchedCount;
+            document.getElementById('progress-percentage').textContent = `${progressPercentage}%`;
+            
+            // Update progress bar
+            const progressBar = document.getElementById('main-progress-bar');
+            const progressText = document.getElementById('progress-text');
+            
+            progressBar.style.width = `${progressPercentage}%`;
+            progressText.textContent = `${progressPercentage}% Complete (${watchedCount}/${series.totalEpisodes} episodes)`;
+        }
+
+        function renderEpisodes() {
+            if (!currentSeries) return;
+            
+            const series = seriesData[currentSeries];
+            const episodeList = document.getElementById('episode-list');
+            
+            episodeList.innerHTML = series.episodes.map(episode => {
+                const isWatched = watchedEpisodes[currentSeries] && watchedEpisodes[currentSeries].includes(episode.number);
+                const inWatchlist = watchlist.some(item => item.series === currentSeries && item.episode === episode.number);
+                
+                return `
+                    <div class="episode-item ${isWatched ? 'watched' : ''} ${inWatchlist ? 'in-watchlist' : ''}" data-episode="${episode.number}">
+                        <div class="episode-header">
+                            <span class="episode-number">Episode ${episode.number}</span>
+                            <div class="episode-actions">
+                                <button class="action-btn watch-btn ${isWatched ? 'active' : ''}" onclick="toggleWatched(${episode.number})" title="${isWatched ? 'Mark as unwatched' : 'Mark as watched'}">
+                                    ${isWatched ? '👁️' : '👁️‍🗨️'}
+                                </button>
+                                <button class="action-btn watchlist-btn ${inWatchlist ? 'active' : ''}" onclick="toggleWatchlist(${episode.number})" title="${inWatchlist ? 'Remove from watchlist' : 'Add to watchlist'}">
+                                    ${inWatchlist ? '🔖' : '📑'}
+                                </button>
+                            </div>
+                        </div>
+                        <div class="episode-title">${episode.title}</div>
+                        <div class="episode-description">${episode.description}</div>
+                        <div class="episode-meta">
+                            <span class="episode-duration">${episode.duration}</span>
+                            <div class="rating-container">
+                                <span>Rating:</span>
+                                <div class="star-rating" data-episode="${episode.number}">
+                                    ${[1,2,3,4,5].map(star => `
+                                        <span class="star ${episode.rating >= star ? 'active' : ''}" onclick="rateEpisode(${episode.number}, ${star})">★</span>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleWatched(episodeNumber) {
+            if (!watchedEpisodes[currentSeries]) {
+                watchedEpisodes[currentSeries] = [];
+            }
+            
+            const index = watchedEpisodes[currentSeries].indexOf(episodeNumber);
+            if (index > -1) {
+                watchedEpisodes[currentSeries].splice(index, 1);
+            } else {
+                watchedEpisodes[currentSeries].push(episodeNumber);
+            }
+            
+            localStorage.setItem('watchedEpisodes', JSON.stringify(watchedEpisodes));
+            updateSeriesStats();
+            renderEpisodes();
+            updateProgressChart();
+        }
+
+        function toggleWatchlist(episodeNumber) {
+            const index = watchlist.findIndex(item => item.series === currentSeries && item.episode === episodeNumber);
+            
+            if (index > -1) {
+                watchlist.splice(index, 1);
+            } else {
+                watchlist.push({
+                    series: currentSeries,
+                    episode: episodeNumber,
+                    title: `Episode ${episodeNumber}`,
+                    seriesTitle: seriesData[currentSeries].title
+                });
+            }
+            
+            localStorage.setItem('watchlist', JSON.stringify(watchlist));
+            renderEpisodes();
+            renderWatchlist();
+        }
+
+        function rateEpisode(episodeNumber, rating) {
+            const key = `${currentSeries}_${episodeNumber}`;
+            episodeRatings[key] = rating;
+            localStorage.setItem('episodeRatings', JSON.stringify(episodeRatings));
+            
+            // Update the display
+            const stars = document.querySelectorAll(`[data-episode="${episodeNumber}"] .star`);
+            stars.forEach((star, index) => {
+                star.classList.toggle('active', index < rating);
+            });
+            
+            // Update the data
+            const episode = seriesData[currentSeries].episodes.find(ep => ep.number === episodeNumber);
+            if (episode) {
+                episode.rating = rating;
+            }
+            
+            updateProgressChart();
+        }
+
+        function markAllWatched() {
+            if (!currentSeries) return;
+            
+            watchedEpisodes[currentSeries] = seriesData[currentSeries].episodes.map(ep => ep.number);
+            localStorage.setItem('watchedEpisodes', JSON.stringify(watchedEpisodes));
+            updateSeriesStats();
+            renderEpisodes();
+            updateProgressChart();
+        }
+
+        function markAllUnwatched() {
+            if (!currentSeries) return;
+            
+            watchedEpisodes[currentSeries] = [];
+            localStorage.setItem('watchedEpisodes', JSON.stringify(watchedEpisodes));
+            updateSeriesStats();
+            renderEpisodes();
+            updateProgressChart();
+        }
+
+        function toggleWatchlistView() {
+            showingWatchlist = !showingWatchlist;
+            const btn = event.target;
+            
+            if (showingWatchlist) {
+                document.getElementById('episodes-container').classList.add('hidden');
+                document.getElementById('watchlist-section').classList.remove('hidden');
+                btn.textContent = 'Show Episodes';
+                renderWatchlist();
+            } else {
+                document.getElementById('episodes-container').classList.remove('hidden');
+                document.getElementById('watchlist-section').classList.add('hidden');
+                btn.textContent = 'Show Watchlist';
+            }
+        }
+
+        function renderWatchlist() {
+            const watchlistItems = document.getElementById('watchlist-items');
+            const watchlistEpisodes = watchlist.filter(item => item.series === currentSeries);
+            
+            if (watchlistEpisodes.length === 0) {
+                watchlistItems.innerHTML = `
+                    <div class="empty-watchlist">
+                        <h3>No episodes in watchlist</h3>
+                        <p>Add episodes to your watchlist to see them here.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            watchlistItems.innerHTML = watchlistEpisodes.map(item => `
+                <div class="watchlist-item">
+                    <div class="watchlist-info">
+                        <div class="watchlist-title">${item.seriesTitle} - ${item.title}</div>
+                        <div class="watchlist-series">Ready to watch</div>
+                    </div>
+                    <button class="remove-watchlist" onclick="toggleWatchlist(${item.episode})">Remove</button>
+                </div>
+            `).join('');
+        }
+
+        function initProgressChart() {
+            if (!currentSeries) return;
+            
+            const chartDom = document.getElementById('progress-chart');
+            const myChart = echarts.init(chartDom);
+            
+            const series = seriesData[currentSeries];
+            const watchedCount = watchedEpisodes[currentSeries] ? watchedEpisodes[currentSeries].length : 0;
+            const unwatchedCount = series.totalEpisodes - watchedCount;
+            
+            const option = {
+                backgroundColor: 'transparent',
+                title: {
+                    text: `${series.title} Progress`,
+                    left: 'center',
+                    textStyle: {
+                        color: '#DC143C',
+                        fontFamily: 'Orbitron',
+                        fontSize: 18
+                    }
+                },
+                tooltip: {
+                    trigger: 'item',
+                    backgroundColor: '#2d2d2d',
+                    borderColor: '#DC143C',
+                    textStyle: {
+                        color: '#ffffff'
+                    }
+                },
+                series: [
+                    {
+                        name: 'Progress',
+                        type: 'pie',
+                        radius: ['40%', '70%'],
+                        center: ['50%', '60%'],
+                        data: [
+                            { 
+                                value: watchedCount, 
+                                name: 'Watched',
+                                itemStyle: { color: '#DC143C' }
+                            },
+                            { 
+                                value: unwatchedCount, 
+                                name: 'Unwatched',
+                                itemStyle: { color: '#2d2d2d' }
+                            }
+                        ],
+                        emphasis: {
+                            itemStyle: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(220, 20, 60, 0.5)'
+                            }
+                        },
+                        label: {
+                            color: '#ffffff',
+                            fontFamily: 'Inter'
+                        }
+                    }
+                ]
+            };
+            
+            myChart.setOption(option);
+            
+            // Make chart responsive
+            window.addEventListener('resize', function() {
+                myChart.resize();
+            });
+        }
+
+        function updateProgressChart() {
+            initProgressChart();
+        }
+
+        function hideSeriesContent() {
+            document.getElementById('series-info').classList.add('hidden');
+            document.getElementById('progress-section').classList.add('hidden');
+            document.getElementById('chart-section').classList.add('hidden');
+            document.getElementById('episodes-container').classList.add('hidden');
+            document.getElementById('watchlist-section').classList.add('hidden');
+            currentSeries = null;
+            showingWatchlist = false;
+        }
+    </script>
+</body>
+</html>
