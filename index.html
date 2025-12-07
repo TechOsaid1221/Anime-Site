@@ -273,7 +273,66 @@
 
         <h2 class="section-title">Trending Now</h2>
         <div class="row row-cols-1 row-cols-md-3 row-cols-lg-5 g-4" id="anime-grid">
-            <!-- Cards will be injected via JS -->
+            
+            <!-- STATIC CARDS ADDED HERE -->
+            <!-- These will be cleared by JS before loading dynamic content -->
+            
+            <div class="col">
+                <div class="anime-card">
+                    <div class="card-img-wrapper">
+                        <img src="https://m.media-amazon.com/images/M/MV5BZjZjNzI5MDYtZTI3YS00N2IxLWJjNmYtOWNiZTI4M2E3ZDhhXkEyXkFqcGdeQXVyNzM0NzQyMTU@._V1_FMjpg_UX1000_.jpg" alt="Static Demo">
+                    </div>
+                    <span class="badge-score"><i class="fas fa-star me-1"></i>0.0</span>
+                    <div class="card-body">
+                        <h5 class="card-title text-truncate">Static Card 1</h5>
+                        <p class="card-text text-muted small">Loading...</p>
+                        <button class="btn btn-sm btn-outline-light w-100">Wait</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="anime-card">
+                    <div class="card-img-wrapper">
+                        <img src="https://m.media-amazon.com/images/M/MV5BNGY4MTg3NzgtMmFkZi00NTg5LWExMmEtMWI3YzI1ODdmMWQ1XkEyXkFqcGdeQXVyMjYwNDA2MDE@._V1_.jpg" alt="Static Demo">
+                    </div>
+                    <span class="badge-score"><i class="fas fa-star me-1"></i>0.0</span>
+                    <div class="card-body">
+                        <h5 class="card-title text-truncate">Static Card 2</h5>
+                        <p class="card-text text-muted small">Loading...</p>
+                        <button class="btn btn-sm btn-outline-light w-100">Wait</button>
+                    </div>
+                </div>
+            </div>
+             <div class="col">
+                <div class="anime-card">
+                    <div class="card-img-wrapper">
+                        <img src="https://flxt.tmsimg.com/assets/p10701949_b_v8_ah.jpg" alt="Static Demo">
+                    </div>
+                    <span class="badge-score"><i class="fas fa-star me-1"></i>0.0</span>
+                    <div class="card-body">
+                        <h5 class="card-title text-truncate">Static Card 3</h5>
+                        <p class="card-text text-muted small">Loading...</p>
+                        <button class="btn btn-sm btn-outline-light w-100">Wait</button>
+                    </div>
+                </div>
+            </div>
+             <div class="col">
+                <div class="anime-card">
+                    <div class="card-img-wrapper">
+                        <img src="https://m.media-amazon.com/images/M/MV5BODcwNWE3OTMtMDc3MS00NDFjLWE1OTAtNDU3NjgxODMxY2UyXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_.jpg" alt="Static Demo">
+                    </div>
+                    <span class="badge-score"><i class="fas fa-star me-1"></i>0.0</span>
+                    <div class="card-body">
+                        <h5 class="card-title text-truncate">Static Card 4</h5>
+                        <p class="card-text text-muted small">Loading...</p>
+                        <button class="btn btn-sm btn-outline-light w-100">Wait</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- END STATIC CARDS -->
+
         </div>
     </div>
 
@@ -812,6 +871,10 @@
 
         // Render Cards
         const grid = document.getElementById('anime-grid');
+        
+        // Remove existing static HTML cards before rendering dynamic ones
+        grid.innerHTML = '';
+        
         animes.forEach(anime => {
             const col = document.createElement('div');
             col.className = 'col';
