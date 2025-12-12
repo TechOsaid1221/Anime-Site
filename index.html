@@ -275,7 +275,7 @@
                         <i class="fab fa-steam"></i>
                     </div>
                     <h5 class="fw-bold">Steam Wallet</h5>
-                    <p class="p-3">PKR 1000 Card</p>
+                    <p class="text-muted">PKR 1000 Card</p>
                     <div class="price-tag mb-3">
                         <span class="pkr">PKR</span> 1,050
                     </div>
@@ -340,7 +340,8 @@
     
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        // NOTE: Removed signInWithCustomToken as it's for server environments
+        import { getAuth, signInAnonymously, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         // NOTE: addDoc is required for purchaseProduct
         import { getFirestore, doc, setDoc, getDoc, collection, query, onSnapshot, addDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         import { setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
@@ -364,7 +365,9 @@
         let currentUserId = null;
         // Using the projectId from config as APP_ID for the artifacts path
         const APP_ID = firebaseConfig.projectId; 
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+        
+        // Removed initialAuthToken variable as it's no longer used
+        // const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null; 
 
         // Set Firebase logging level to Debug
         setLogLevel('Debug');
@@ -395,7 +398,7 @@
         async function saveUserData(userData) {
             if (!db || !currentUserId || currentUserId === 'anonymous') {
                 console.log("Cannot save data for unauthenticated or anonymous user.");
-                showMessage("Login Required", "Please sign in with Google to save your personalized account data.");
+                // Removed showMessage here to prevent modal spam on every page load attempt for anonymous users
                 return;
             }
             
@@ -612,18 +615,16 @@
                 auth = getAuth(app);
                 db = getFirestore(app);
 
-                // 1. Authenticate using the custom token provided by the environment
-                if (initialAuthToken) {
-                    await signInWithCustomToken(auth, initialAuthToken);
-                } else {
-                    // Fallback to anonymous sign-in if no custom token is provided
-                    await signInAnonymously(auth);
-                }
-                
-                // 2. Set up the state change listener AFTER initial auth is done
+                // Setup the state change listener first
                 onAuthStateChanged(auth, (user) => {
                     updateAuthUI(user);
                 });
+
+                // Check if a user is already authenticated (from a previous session)
+                // If not authenticated, attempt anonymous sign-in for initial functionality.
+                if (!auth.currentUser) {
+                    await signInAnonymously(auth);
+                }
                 
             } catch (error) {
                 console.error("Critical Firebase Initialization or Auth Error:", error);
