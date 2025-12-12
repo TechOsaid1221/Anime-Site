@@ -1,954 +1,650 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AnimeStream - Red & Teal</title>
-    
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
-
+    <title>Coin Boost PK - Buy Gaming Currency</title>
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <style>
         :root {
-            --anime-teal: #00e5ff;
-            --anime-teal-dark: #008080;
-            --anime-red: #ff2a2a;
-            --anime-red-dark: #8b0000;
-            --bg-dark: #0f1115;
-            --card-bg: #1a1d24;
+            --primary-color: #ff4500; /* Orange-Red for gaming feel */
+            --secondary-color: #1e1e2f; /* Dark background */
+            --card-color: #2a2a3e;
+            --text-color: #ffffff;
+            --button-hover: #e03c00;
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--bg-dark);
-            color: #fff;
-            overflow-x: hidden;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            padding-top: 56px; /* Space for fixed navbar */
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--bg-dark);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--anime-teal-dark);
-            border-radius: 4px;
-        }
-
-        /* Navbar */
         .navbar {
-            background-color: rgba(15, 17, 21, 0.95);
-            border-bottom: 2px solid var(--anime-red);
-            backdrop-filter: blur(10px);
-        }
-        .navbar-brand {
-            font-weight: 800;
-            color: var(--anime-red) !important;
-            font-size: 1.5rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-        .navbar-brand span {
-            color: var(--anime-teal);
-        }
-        .nav-link {
-            color: #ccc !important;
-            transition: 0.3s;
-        }
-        .nav-link:hover, .nav-link.active {
-            color: var(--anime-teal) !important;
-            text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+            background-color: #1a1a25;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
         }
 
-        /* Buttons */
-        .btn-anime-red {
-            background-color: var(--anime-red);
-            color: white;
-            border: none;
+        .btn-primary-gaming {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
             font-weight: 600;
-            transition: transform 0.2s;
-        }
-        .btn-anime-red:hover {
-            background-color: var(--anime-red-dark);
-            transform: scale(1.05);
-            color: white;
-        }
-        .btn-anime-teal {
-            background-color: var(--anime-teal-dark);
-            color: white;
-            border: none;
-            font-weight: 600;
-        }
-        .btn-anime-teal:hover {
-            background-color: var(--anime-teal);
-            color: #000;
-        }
-
-        /* Anime Cards */
-        .anime-card {
-            background-color: var(--card-bg);
-            border: 1px solid #333;
             border-radius: 8px;
-            overflow: hidden;
             transition: all 0.3s ease;
-            height: 100%;
-            position: relative;
         }
-        .anime-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--anime-teal);
-            box-shadow: 0 0 20px rgba(0, 229, 255, 0.2);
+
+        .btn-primary-gaming:hover {
+            background-color: var(--button-hover);
+            border-color: var(--button-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(255, 69, 0, 0.4);
         }
-        .card-img-wrapper {
-            height: 250px;
+
+        .product-card {
+            background-color: var(--card-color);
+            border: 1px solid #3c3c54;
+            border-radius: 12px;
             overflow: hidden;
-            position: relative;
-        }
-        .anime-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s;
-        }
-        .anime-card:hover img {
-            transform: scale(1.1);
-        }
-        .card-body {
-            padding: 1rem;
-        }
-        .card-title {
-            color: var(--anime-teal);
-            font-weight: 700;
-        }
-        .badge-score {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: var(--anime-red);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-weight: bold;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%; /* Ensure all cards in a row are same height */
         }
 
-        /* Community Section */
-        #community-section {
-            display: none; /* Hidden by default */
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
         }
-        .chat-container {
-            background-color: var(--card-bg);
-            border-radius: 10px;
-            border: 1px solid var(--anime-teal-dark);
-            height: 60vh;
+
+        .product-image {
+            height: 120px;
+            background-color: #35354a;
             display: flex;
-            flex-direction: column;
-        }
-        .chat-messages {
-            flex-grow: 1;
-            overflow-y: auto;
-            padding: 20px;
-        }
-        .message {
-            margin-bottom: 15px;
-            padding: 10px;
-            border-radius: 8px;
-            background: rgba(255,255,255,0.05);
-            border-left: 3px solid var(--anime-teal);
-            animation: fadeIn 0.3s ease;
-        }
-        .message strong {
-            color: var(--anime-red);
-        }
-        .message small {
-            color: #888;
-            font-size: 0.8em;
-            margin-left: 10px;
-        }
-        .message-img {
-            max-width: 200px;
-            border-radius: 5px;
-            margin-top: 10px;
-            border: 2px solid var(--anime-teal-dark);
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: var(--primary-color);
         }
 
-        /* Auth Modal */
-        .modal-content {
-            background-color: var(--card-bg);
-            border: 1px solid var(--anime-teal);
-            box-shadow: 0 0 20px rgba(0, 229, 255, 0.1);
-        }
-        .modal-header {
-            border-bottom: 1px solid #333;
-        }
-        .modal-footer {
-            border-top: 1px solid #333;
-        }
-        .form-control {
-            background-color: rgba(0,0,0,0.3);
-            border: 1px solid #444;
-            color: white;
-        }
-        .form-control:focus {
-            background-color: rgba(0,0,0,0.5);
-            border-color: var(--anime-teal);
-            color: white;
-            box-shadow: 0 0 5px rgba(0, 229, 255, 0.3);
-        }
-
-        /* Footer */
-        footer {
-            background-color: #050505;
-            border-top: 2px solid var(--anime-teal-dark);
-            padding: 40px 0;
-            margin-top: 50px;
-        }
-
-        /* Utilities */
-        .section-title {
-            border-left: 5px solid var(--anime-red);
-            padding-left: 15px;
-            margin-bottom: 30px;
+        .price-tag {
+            font-size: 1.5rem;
             font-weight: 800;
+            color: #4CAF50; /* Green for price */
         }
-        .hidden {
-            display: none !important;
+
+        .pkr {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-right: 5px;
         }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+
+        .hero-section {
+            background: linear-gradient(135deg, #1a1a25, #2a2a3e);
+            padding: 4rem 0;
+            margin-bottom: 3rem;
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        /* Responsive adjustments for mobile */
+        @media (max-width: 576px) {
+            .hero-section {
+                padding: 2rem 0;
+            }
+            .product-card {
+                margin-bottom: 1.5rem;
+            }
+            .price-tag {
+                font-size: 1.2rem;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <!-- Notification Modal Structure -->
+    <div class="modal fade" id="statusModal" tabindex="-1" aria-labelledby="statusModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark text-white" style="border-radius: 12px; border: 2px solid var(--primary-color);">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title" id="statusModalLabel">Message</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pt-2" id="statusModalBody">
+                    <!-- Dynamic message goes here -->
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-primary-gaming" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg fixed-top" data-bs-theme="dark">
         <div class="container">
-            <a class="navbar-brand" href="#" onclick="showPage('home')">Anime<span>Stream</span></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <a class="navbar-brand fw-bold" href="#">
+                <i class="fas fa-gamepad text-danger me-2"></i>Coin Boost <span class="badge bg-danger">PK</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
+                <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" id="nav-home" href="#" onclick="showPage('home')">Home</a>
+                        <a class="nav-link active" aria-current="page" href="#products">Products</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="nav-community" href="#" onclick="showPage('community')">Community & Uploads</a>
+                        <a class="nav-link" href="#">Support</a>
+                    </li>
+                    <li class="nav-item">
+                        <button id="authButton" class="btn btn-primary-gaming ms-lg-3 mt-2 mt-lg-0" onclick="handleAuth()">
+                            <i class="fab fa-google"></i> Sign In
+                        </button>
                     </li>
                 </ul>
-                <div class="d-flex align-items-center gap-3">
-                    <div id="user-info" class="d-none align-items-center gap-2">
-                        <img id="user-avatar" src="" alt="User" class="rounded-circle" style="width: 32px; height: 32px; border: 2px solid var(--anime-teal);">
-                        <span id="user-name" class="text-light"></span>
-                        <button class="btn btn-sm btn-outline-danger" onclick="logout()">Sign Out</button>
-                    </div>
-                    <!-- Changed onclick to open modal -->
-                    <button id="login-btn" class="btn btn-anime-teal" data-bs-toggle="modal" data-bs-target="#authModal">
-                        <i class="fas fa-user me-2"></i>Sign In / Up
-                    </button>
-                </div>
             </div>
         </div>
     </nav>
 
-    <!-- Home Section -->
-    <div id="home-section" class="container py-5">
-        
-        <!-- Hero -->
-        <div class="p-5 mb-5 rounded-3" style="background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1541562232579-512a21360020?q=80&w=1000&auto=format&fit=crop'); background-size: cover; background-position: center; border: 1px solid var(--anime-teal-dark);">
-            <div class="container-fluid py-3">
-                <h1 class="display-5 fw-bold text-white">Welcome to the <span style="color: var(--anime-red);">Red</span> & <span style="color: var(--anime-teal);">Teal</span> Zone</h1>
-                <p class="col-md-8 fs-4">Stream your favorite anime, chat with the community, and upload your waifus/husbandos.</p>
-                <button class="btn btn-anime-red btn-lg" onclick="showPage('community')">Join Community</button>
+    <!-- Hero Section -->
+    <header class="hero-section text-center">
+        <div class="container">
+            <h1 class="display-4 fw-bolder text-white">Your Source for Gaming Power in Pakistan</h1>
+            <p class="lead text-muted mt-3">Top-ups for all your favorite games, delivered instantly and securely in PKR.</p>
+            <div id="authStatus" class="mt-4 p-3 rounded-3" style="background-color: rgba(255, 69, 0, 0.1);">
+                <span id="welcomeMessage" class="fw-semibold">Connect your Google account to save your purchase history!</span>
             </div>
         </div>
+    </header>
 
-        <h2 class="section-title">Trending Now</h2>
-        <div class="row row-cols-1 row-cols-md-3 row-cols-lg-5 g-4" id="anime-grid">
+    <!-- Products Section -->
+    <main class="container" id="products">
+        <h2 class="text-center mb-5 fw-bold text-primary">Featured Currency Packs</h2>
+        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4">
+            <!-- Product 1: PUBG Mobile UC -->
+            <div class="col">
+                <div class="product-card text-center p-3">
+                    <div class="product-image rounded-3 mb-3">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h5 class="fw-bold">PUBG Mobile</h5>
+                    <p class="text-muted">600 UC (Elite Pack)</p>
+                    <div class="price-tag mb-3">
+                        <span class="pkr">PKR</span> 1,900
+                    </div>
+                    <button class="btn btn-primary-gaming w-100" data-product="PUBG_600UC" onclick="purchaseProduct('PUBG 600 UC')">Buy Now</button>
+                </div>
+            </div>
+
+            <!-- Product 2: Free Fire Diamonds -->
+            <div class="col">
+                <div class="product-card text-center p-3">
+                    <div class="product-image rounded-3 mb-3">
+                        <i class="fas fa-gem"></i>
+                    </div>
+                    <h5 class="fw-bold">Free Fire</h5>
+                    <p class="text-muted">1000 Diamonds</p>
+                    <div class="price-tag mb-3">
+                        <span class="pkr">PKR</span> 3,100
+                    </div>
+                    <button class="btn btn-primary-gaming w-100" data-product="FF_1000DM" onclick="purchaseProduct('Free Fire 1000 Diamonds')">Buy Now</button>
+                </div>
+            </div>
+
+            <!-- Product 3: Valorant Points -->
+            <div class="col">
+                <div class="product-card text-center p-3">
+                    <div class="product-image rounded-3 mb-3">
+                        <i class="fas fa-bomb"></i>
+                    </div>
+                    <h5 class="fw-bold">Valorant</h5>
+                    <p class="text-muted">1750 VP (Points)</p>
+                    <div class="price-tag mb-3">
+                        <span class="pkr">PKR</span> 4,500
+                    </div>
+                    <button class="btn btn-primary-gaming w-100" data-product="VALO_1750VP" onclick="purchaseProduct('Valorant 1750 VP')">Buy Now</button>
+                </div>
+            </div>
+
+            <!-- Product 4: COD Mobile CP -->
+            <div class="col">
+                <div class="product-card text-center p-3">
+                    <div class="product-image rounded-3 mb-3">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <h5 class="fw-bold">COD Mobile</h5>
+                    <p class="text-muted">800 CP Bundle</p>
+                    <div class="price-tag mb-3">
+                        <span class="pkr">PKR</span> 1,300
+                    </div>
+                    <button class="btn btn-primary-gaming w-100" data-product="CODM_800CP" onclick="purchaseProduct('COD Mobile 800 CP')">Buy Now</button>
+                </div>
+            </div>
+
+            <!-- Product 5: Genshin Impact Crystals -->
+            <div class="col">
+                <div class="product-card text-center p-3">
+                    <div class="product-image rounded-3 mb-3">
+                        <i class="fas fa-globe-asia"></i>
+                    </div>
+                    <h5 class="fw-bold">Genshin Impact</h5>
+                    <p class="text-muted">330 Crystals</p>
+                    <div class="price-tag mb-3">
+                        <span class="pkr">PKR</span> 1,500
+                    </div>
+                    <button class="btn btn-primary-gaming w-100" data-product="GEN_330CRY" onclick="purchaseProduct('Genshin Impact 330 Crystals')">Buy Now</button>
+                </div>
+            </div>
+
+            <!-- Product 6: Roblox Robux -->
+            <div class="col">
+                <div class="product-card text-center p-3">
+                    <div class="product-image rounded-3 mb-3">
+                        <i class="fas fa-cubes"></i>
+                    </div>
+                    <h5 class="fw-bold">Roblox</h5>
+                    <p class="text-muted">400 Robux Card</p>
+                    <div class="price-tag mb-3">
+                        <span class="pkr">PKR</span> 1,200
+                    </div>
+                    <button class="btn btn-primary-gaming w-100" data-product="ROB_400RBUX" onclick="purchaseProduct('Roblox 400 Robux')">Buy Now</button>
+                </div>
+            </div>
             
-            <!-- Hardcoded Anime Cards -->
-
-            <!-- Card 1 -->
+            <!-- Product 7: EA FC Mobile Points -->
             <div class="col">
-                <div class="anime-card">
-                    <div class="card-img-wrapper">
-                        <img src="https://m.media-amazon.com/images/M/MV5BZjZjNzI5MDYtZTI3YS00N2IxLWJjNmYtOWNiZTI4M2E3ZDhhXkEyXkFqcGdeQXVyNzM0NzQyMTU@._V1_FMjpg_UX1000_.jpg" alt="Demon Slayer" onerror="this.src='https://via.placeholder.com/200x300?text=Anime'">
+                <div class="product-card text-center p-3">
+                    <div class="product-image rounded-3 mb-3">
+                        <i class="fas fa-futbol"></i>
                     </div>
-                    <span class="badge-score"><i class="fas fa-star me-1"></i>9.8</span>
-                    <div class="card-body">
-                        <h5 class="card-title text-truncate">Demon Slayer</h5>
-                        <p class="card-text text-muted small">Action, Adventure</p>
-                        <button class="btn btn-sm btn-outline-light w-100">Watch Now</button>
+                    <h5 class="fw-bold">EA FC Mobile</h5>
+                    <p class="text-muted">1300 FC Points</p>
+                    <div class="price-tag mb-3">
+                        <span class="pkr">PKR</span> 2,800
                     </div>
+                    <button class="btn btn-primary-gaming w-100" data-product="FC_1300PTS" onclick="purchaseProduct('EA FC Mobile 1300 Points')">Buy Now</button>
                 </div>
             </div>
 
-            <!-- Card 2 -->
+            <!-- Product 8: PUBG Mobile UC (High Value) -->
             <div class="col">
-                <div class="anime-card">
-                    <div class="card-img-wrapper">
-                        <img src="https://m.media-amazon.com/images/M/MV5BNGY4MTg3NzgtMmFkZi00NTg5LWExMmEtMWI3YzI1ODdmMWQ1XkEyXkFqcGdeQXVyMjYwNDA2MDE@._V1_.jpg" alt="Jujutsu Kaisen" onerror="this.src='https://via.placeholder.com/200x300?text=Anime'">
+                <div class="product-card text-center p-3 border border-warning">
+                    <div class="product-image rounded-3 mb-3 bg-warning-subtle text-dark">
+                        <i class="fas fa-trophy"></i>
                     </div>
-                    <span class="badge-score"><i class="fas fa-star me-1"></i>9.6</span>
-                    <div class="card-body">
-                        <h5 class="card-title text-truncate">Jujutsu Kaisen</h5>
-                        <p class="card-text text-muted small">Action, Adventure</p>
-                        <button class="btn btn-sm btn-outline-light w-100">Watch Now</button>
+                    <h5 class="fw-bold text-warning">PUBG Mobile</h5>
+                    <p class="text-muted">3000 UC (Bonus Offer)</p>
+                    <div class="price-tag mb-3">
+                        <span class="pkr">PKR</span> 8,500
                     </div>
+                    <button class="btn btn-primary-gaming w-100" data-product="PUBG_3000UC" onclick="purchaseProduct('PUBG 3000 UC')">Buy Now</button>
                 </div>
             </div>
 
-            <!-- Card 3 -->
+            <!-- Product 9: Steam Gift Card -->
             <div class="col">
-                <div class="anime-card">
-                    <div class="card-img-wrapper">
-                        <img src="https://flxt.tmsimg.com/assets/p10701949_b_v8_ah.jpg" alt="Attack on Titan" onerror="this.src='https://via.placeholder.com/200x300?text=Anime'">
+                <div class="product-card text-center p-3">
+                    <div class="product-image rounded-3 mb-3">
+                        <i class="fab fa-steam"></i>
                     </div>
-                    <span class="badge-score"><i class="fas fa-star me-1"></i>9.9</span>
-                    <div class="card-body">
-                        <h5 class="card-title text-truncate">Attack on Titan</h5>
-                        <p class="card-text text-muted small">Action, Adventure</p>
-                        <a href="episodes.html"><button class="btn btn-sm btn-outline-light w-100">Watch Now</button></a>
+                    <h5 class="fw-bold">Steam Wallet</h5>
+                    <p class="text-muted">PKR 1000 Card</p>
+                    <div class="price-tag mb-3">
+                        <span class="pkr">PKR</span> 1,050
                     </div>
+                    <button class="btn btn-primary-gaming w-100" data-product="STEAM_1000" onclick="purchaseProduct('Steam PKR 1000')">Buy Now</button>
                 </div>
             </div>
 
-            <!-- Card 4 -->
+            <!-- Product 10: COD Mobile CP (Higher Value) -->
             <div class="col">
-                <div class="anime-card">
-                    <div class="card-img-wrapper">
-                        <img src="https://m.media-amazon.com/images/M/MV5BODcwNWE3OTMtMDc3MS00NDFjLWE1OTAtNDU3NjgxODMxY2UyXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_.jpg" alt="One Piece" onerror="this.src='https://via.placeholder.com/200x300?text=Anime'">
+                <div class="product-card text-center p-3 border border-info">
+                    <div class="product-image rounded-3 mb-3 bg-info-subtle text-dark">
+                        <i class="fas fa-star"></i>
                     </div>
-                    <span class="badge-score"><i class="fas fa-star me-1"></i>9.7</span>
-                    <div class="card-body">
-                        <h5 class="card-title text-truncate">One Piece</h5>
-                        <p class="card-text text-muted small">Action, Adventure</p>
-                        <button class="btn btn-sm btn-outline-light w-100">Watch Now</button>
+                    <h5 class="fw-bold text-info">COD Mobile</h5>
+                    <p class="text-muted">4000 CP Mega Pack</p>
+                    <div class="price-tag mb-3">
+                        <span class="pkr">PKR</span> 6,900
                     </div>
+                    <button class="btn btn-primary-gaming w-100" data-product="CODM_4000CP" onclick="purchaseProduct('COD Mobile 4000 CP')">Buy Now</button>
                 </div>
             </div>
-
-            <!-- Card 5 -->
+            
+             <!-- Product 11: League of Legends RP -->
             <div class="col">
-                <div class="anime-card">
-                    <div class="card-img-wrapper">
-                        <img src="https://m.media-amazon.com/images/M/MV5BZjY5ZjM4ZDYtNGQ2ZC00NjFjLWExNjYtNDNmYmRkZTI1NjQ4XkEyXkFqcGdeQXVyMTEzMTI1Mjk3._V1_FMjpg_UX1000_.jpg" alt="Chainsaw Man" onerror="this.src='https://via.placeholder.com/200x300?text=Anime'">
+                <div class="product-card text-center p-3">
+                    <div class="product-image rounded-3 mb-3">
+                        <i class="fas fa-dragon"></i>
                     </div>
-                    <span class="badge-score"><i class="fas fa-star me-1"></i>9.5</span>
-                    <div class="card-body">
-                        <h5 class="card-title text-truncate">Chainsaw Man</h5>
-                        <p class="card-text text-muted small">Action, Adventure</p>
-                        <button class="btn btn-sm btn-outline-light w-100">Watch Now</button>
+                    <h5 class="fw-bold">League of Legends</h5>
+                    <p class="text-muted">1380 Riot Points</p>
+                    <div class="price-tag mb-3">
+                        <span class="pkr">PKR</span> 3,000
                     </div>
+                    <button class="btn btn-primary-gaming w-100" data-product="LOL_RP" onclick="purchaseProduct('LoL 1380 RP')">Buy Now</button>
                 </div>
             </div>
-
-            <!-- Card 6 -->
+            
+             <!-- Product 12: Apex Legends Coins -->
             <div class="col">
-                <div class="anime-card">
-                    <div class="card-img-wrapper">
-                        <img src="https://m.media-amazon.com/images/M/MV5BNzE3M2YyMTYtOTY5MS00YjQ5LTg2NTItYjYwZWIwNmUzM2ViXkEyXkFqcGdeQXVyMzYzMzg1MDE@._V1_.jpg" alt="Spy x Family" onerror="this.src='https://via.placeholder.com/200x300?text=Anime'">
+                <div class="product-card text-center p-3">
+                    <div class="product-image rounded-3 mb-3">
+                        <i class="fas fa-bolt"></i>
                     </div>
-                    <span class="badge-score"><i class="fas fa-star me-1"></i>9.4</span>
-                    <div class="card-body">
-                        <h5 class="card-title text-truncate">Spy x Family</h5>
-                        <p class="card-text text-muted small">Action, Adventure</p>
-                        <button class="btn btn-sm btn-outline-light w-100">Watch Now</button>
+                    <h5 class="fw-bold">Apex Legends</h5>
+                    <p class="text-muted">2150 Apex Coins</p>
+                    <div class="price-tag mb-3">
+                        <span class="pkr">PKR</span> 4,999
                     </div>
-                </div>
-            </div>
-
-            <!-- Card 7 -->
-            <div class="col">
-                <div class="anime-card">
-                    <div class="card-img-wrapper">
-                        <img src="https://m.media-amazon.com/images/M/MV5BOGZmYjdjN2UtNjAwZi00YmEyLWFhNTEtNjM1OTc5ODg0MGEyXkEyXkFqcGdeQXVyMTA1NjQyNjkw._V1_FMjpg_UX1000_.jpg" alt="My Hero Academia" onerror="this.src='https://via.placeholder.com/200x300?text=Anime'">
-                    </div>
-                    <span class="badge-score"><i class="fas fa-star me-1"></i>8.9</span>
-                    <div class="card-body">
-                        <h5 class="card-title text-truncate">My Hero Academia</h5>
-                        <p class="card-text text-muted small">Action, Adventure</p>
-                        <button class="btn btn-sm btn-outline-light w-100">Watch Now</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 8 -->
-            <div class="col">
-                <div class="anime-card">
-                    <div class="card-img-wrapper">
-                        <img src="https://m.media-amazon.com/images/M/MV5BNTAzYTlkMWEtOTNjZC00ZDU0LWI5ODUtYTRmYzY0MTAzYWZlXkEyXkFqcGdeQXVyMzgxODM4NjM@._V1_FMjpg_UX1000_.jpg" alt="Black Clover" onerror="this.src='https://via.placeholder.com/200x300?text=Anime'">
-                    </div>
-                    <span class="badge-score"><i class="fas fa-star me-1"></i>9.0</span>
-                    <div class="card-body">
-                        <h5 class="card-title text-truncate">Black Clover</h5>
-                        <p class="card-text text-muted small">Action, Adventure</p>
-                        <button class="btn btn-sm btn-outline-light w-100">Watch Now</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 9 -->
-            <div class="col">
-                <div class="anime-card">
-                    <div class="card-img-wrapper">
-                        <img src="https://m.media-amazon.com/images/M/MV5BNjFhYTUzOTItZTRiMS00MjI4LThkOTgtMWBiZGUyNTE0ZDg2XkEyXkFqcGdeQXVyMTMzNDExODE5._V1_.jpg" alt="Blue Lock" onerror="this.src='https://via.placeholder.com/200x300?text=Anime'">
-                    </div>
-                    <span class="badge-score"><i class="fas fa-star me-1"></i>9.2</span>
-                    <div class="card-body">
-                        <h5 class="card-title text-truncate">Blue Lock</h5>
-                        <p class="card-text text-muted small">Action, Adventure</p>
-                        <button class="btn btn-sm btn-outline-light w-100">Watch Now</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 10 -->
-            <div class="col">
-                <div class="anime-card">
-                    <div class="card-img-wrapper">
-                        <img src="https://m.media-amazon.com/images/M/MV5BNGM0YTk3MWEtN2JlZC00ZmZmLWIwMDktZTMxZGE5Zjc2MGExXkEyXkFqcGdeQXVyNjAwNDUxODI@._V1_FMjpg_UX1000_.jpg" alt="Hunter x Hunter" onerror="this.src='https://via.placeholder.com/200x300?text=Anime'">
-                    </div>
-                    <span class="badge-score"><i class="fas fa-star me-1"></i>9.8</span>
-                    <div class="card-body">
-                        <h5 class="card-title text-truncate">Hunter x Hunter</h5>
-                        <p class="card-text text-muted small">Action, Adventure</p>
-                        <button class="btn btn-sm btn-outline-light w-100">Watch Now</button>
-                    </div>
+                    <button class="btn btn-primary-gaming w-100" data-product="APEX_COINS" onclick="purchaseProduct('Apex 2150 Coins')">Buy Now</button>
                 </div>
             </div>
 
         </div>
-    </div>
-
-    <!-- Community Section -->
-    <div id="community-section" class="container py-5">
-        <h2 class="section-title">Community Hub</h2>
-        
-        <div class="alert alert-info" role="alert" id="login-alert">
-            <i class="fas fa-info-circle me-2"></i> You must be signed in to post messages or upload characters.
-        </div>
-
-        <div class="row">
-            <!-- Chat Area -->
-            <div class="col-lg-8 mb-4">
-                <div class="chat-container">
-                    <div class="p-3 border-bottom border-secondary d-flex justify-content-between align-items-center">
-                        <h5 class="m-0"><i class="fas fa-comments text-danger me-2"></i>Global Chat</h5>
-                        <span class="badge bg-secondary">Live</span>
-                    </div>
-                    <div id="chat-messages" class="chat-messages">
-                        <!-- Messages go here -->
-                        <div class="text-center text-muted mt-5">Loading chats...</div>
-                    </div>
-                    <div class="p-3 border-top border-secondary bg-dark">
-                        <div class="input-group">
-                            <input type="text" id="chat-input" class="form-control bg-dark text-white border-secondary" placeholder="Type a message..." disabled>
-                            <button class="btn btn-anime-teal" id="send-btn" onclick="sendMessage()" disabled>
-                                <i class="fas fa-paper-plane"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Upload Panel -->
-            <div class="col-lg-4">
-                <div class="card bg-dark border-secondary">
-                    <div class="card-header border-secondary text-white fw-bold">
-                        <i class="fas fa-upload text-danger me-2"></i>Upload Favorite Character
-                    </div>
-                    <div class="card-body">
-                        <div class="mb-3">
-                            <label class="form-label text-muted">Character Name</label>
-                            <input type="text" id="char-name" class="form-control bg-dark text-white border-secondary" disabled>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label text-muted">Image URL</label>
-                            <input type="url" id="char-img-url" class="form-control bg-dark text-white border-secondary" placeholder="https://..." disabled>
-                            <div class="form-text text-white-50">Paste a link to an image.</div>
-                        </div>
-                        <div class="d-grid">
-                            <button class="btn btn-anime-red" id="upload-btn" onclick="postCharacter()" disabled>Share Character</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card bg-dark border-secondary mt-4">
-                    <div class="card-body">
-                        <h6 class="card-title text-info">Community Rules</h6>
-                        <ul class="small text-muted ps-3 mb-0">
-                            <li>Be respectful to others.</li>
-                            <li>No spoilers without warning.</li>
-                            <li>Only anime related content.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Auth Modal -->
-    <div class="modal fade" id="authModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header border-secondary">
-                    <h5 class="modal-title fw-bold">Join the <span style="color:var(--anime-teal)">Squad</span></h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="auth-form" onsubmit="return false;">
-                        <div class="mb-3">
-                            <label class="form-label text-muted">Email address</label>
-                            <input type="email" class="form-control" id="auth-email" placeholder="name@example.com">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label text-muted">Password</label>
-                            <input type="password" class="form-control" id="auth-password" placeholder="******">
-                        </div>
-                        <div class="d-grid gap-2">
-                            <button type="button" class="btn btn-anime-teal" onclick="emailLogin()">Sign In</button>
-                            <button type="button" class="btn btn-outline-light" onclick="emailSignup()">Sign Up</button>
-                        </div>
-                    </form>
-                    
-                    <div class="text-center my-3 text-muted">- OR -</div>
-                    
-                    <div class="d-grid">
-                        <button class="btn btn-danger" onclick="googleLogin()">
-                            <i class="fab fa-google me-2"></i>Continue with Google
-                        </button>
-                    </div>
-                    <div id="auth-error" class="text-danger mt-3 text-center small"></div>
-                </div>
-            </div>
-        </div>
-    </div>
+    </main>
 
     <!-- Footer -->
-    <footer>
-        <div class="container text-center">
-            <h4 class="fw-bold mb-3">Anime<span style="color: var(--anime-red);">Stream</span></h4>
-            <div class="mb-4">
-                <a href="#" class="text-white mx-2 fs-5"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="text-white mx-2 fs-5"><i class="fab fa-discord"></i></a>
-                <a href="#" class="text-white mx-2 fs-5"><i class="fab fa-instagram"></i></a>
-            </div>
-            <p class="text-muted mb-0">
-                &copy; 2025 AnimeStream. All rights reserved. <br>
-                <span style="color: var(--anime-teal);">Developed by You</span>
-            </p>
+    <footer class="mt-5 p-4 text-center text-white-50" style="background-color: #1a1a25;">
+        <div class="container">
+            <p class="mb-0">&copy; 2025 Gamer's Vault PK. All prices in PKR. | Secure Checkout.</p>
+            <p class="small">User ID: <span id="currentUserId">N/A</span></p>
         </div>
     </footer>
 
-    <!-- Bootstrap Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Firebase JS SDK -->
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Firebase SDKs -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
-        import {
-            getAuth,
-            onAuthStateChanged,
-            signInWithPopup,
-            GoogleAuthProvider,
-            signOut,
-            signInWithEmailAndPassword,
-            createUserWithEmailAndPassword
-        } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js";
-        import { 
-            getFirestore, 
-            collection, 
-            addDoc, 
-            onSnapshot, 
-            query, 
-            orderBy, 
-            limit,
-            serverTimestamp 
-        } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, query, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // --- Configuration provided by User ---
-        const firebaseConfig = {
-            apiKey: "AIzaSyCc5XENrJcFfqS7egvvgeHFFrAzas-myvw",
-            authDomain: "talim-zia.firebaseapp.com",
-            projectId: "talim-zia",
-            storageBucket: "talim-zia.firebasestorage.app",
-            messagingSenderId: "1031601706144",
-            appId: "1:1031601706144:web:9f81e6272b51b97aae25c5",
-            measurementId: "G-LBXFS9PB0Q"
-        };
+        // Global Firebase variables
+        let app;
+        let auth;
+        let db;
+        let currentUserId = null;
+        const APP_ID = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const provider = new GoogleAuthProvider();
-        // Defined here to be accessible by all functions
-        const messagesRef = collection(db, "messages");
+        // Set Firebase logging level to Debug
+        setLogLevel('Debug');
 
-        // State
-        let currentUser = null;
-        let authModalInstance = null; // Will store the bootstrap modal instance
-        let unsubscribeChat = null; // Store the chat listener to clean it up
+        /**
+         * Shows a customized modal message to the user instead of using alert().
+         * @param {string} title - The title of the modal.
+         * @param {string} body - The message body.
+         */
+        function showMessage(title, body) {
+            const modalTitle = document.getElementById('statusModalLabel');
+            const modalBody = document.getElementById('statusModalBody');
 
-        // --- Auth Functions ---
-        window.googleLogin = () => {
-            signInWithPopup(auth, provider)
-                .then((result) => {
-                    console.log("Signed in:", result.user.email);
-                    showToast("Welcome back, " + result.user.displayName + "!");
-                    closeAuthModal();
-                })
-                .catch((error) => {
-                    console.error("Auth Error:", error.code, error.message);
-                    document.getElementById('auth-error').textContent = "Unable to sign in with Google. Please try again.";
-                });
-        };
-
-        window.emailLogin = () => {
-            const email = document.getElementById('auth-email').value;
-            const pass = document.getElementById('auth-password').value;
-            
-            if(!email || !pass) {
-                document.getElementById('auth-error').textContent = "Please enter both email and password.";
-                return;
-            }
-
-            signInWithEmailAndPassword(auth, email, pass)
-                .then((userCredential) => {
-                    showToast("Signed in successfully!");
-                    closeAuthModal();
-                    // Clear inputs
-                    document.getElementById('auth-email').value = '';
-                    document.getElementById('auth-password').value = '';
-                })
-                .catch((error) => {
-                    console.error("Login Error:", error.code);
-                    let displayMessage = "Incorrect email or password.";
-                    
-                    if (error.code === 'auth/invalid-email') {
-                        displayMessage = "Please enter a valid email address.";
-                    } else if (error.code === 'auth/user-disabled') {
-                        displayMessage = "This account has been disabled.";
-                    } else if (error.code === 'auth/too-many-requests') {
-                        displayMessage = "Too many failed attempts. Please try again later.";
-                    }
-                    
-                    document.getElementById('auth-error').textContent = displayMessage;
-                });
-        };
-
-        window.emailSignup = () => {
-            const email = document.getElementById('auth-email').value;
-            const pass = document.getElementById('auth-password').value;
-
-            if(!email || !pass) {
-                document.getElementById('auth-error').textContent = "Please enter both email and password.";
-                return;
-            }
-
-            createUserWithEmailAndPassword(auth, email, pass)
-                .then((userCredential) => {
-                    showToast("Account successfully created! Welcome aboard.");
-                    closeAuthModal();
-                    document.getElementById('auth-email').value = '';
-                    document.getElementById('auth-password').value = '';
-                })
-                .catch((error) => {
-                    console.error("Signup Error:", error.code);
-                    let displayMessage = "Unable to create account. Please try again.";
-                    
-                    if (error.code === 'auth/email-already-in-use') {
-                        displayMessage = "This email address is already registered. Please sign in instead.";
-                    } else if (error.code === 'auth/weak-password') {
-                        displayMessage = "Please choose a stronger password (at least 6 characters).";
-                    } else if (error.code === 'auth/invalid-email') {
-                        displayMessage = "Please enter a valid email address.";
-                    }
-                    
-                    document.getElementById('auth-error').textContent = displayMessage;
-                });
-        }
-
-        window.logout = () => {
-            signOut(auth).then(() => {
-                showToast("Signed out successfully.");
-            }).catch((error) => {
-                console.error("Sign out error", error);
-            });
-        };
-
-        function closeAuthModal() {
-            const modalEl = document.getElementById('authModal');
-            const modal = bootstrap.Modal.getInstance(modalEl);
-            if (modal) {
-                modal.hide();
-            }
-            document.getElementById('auth-error').textContent = '';
-        }
-
-        // --- Auth State Observer ---
-        onAuthStateChanged(auth, (user) => {
-            currentUser = user;
-            updateUI(user);
-            
-            if (user) {
-                // User is logged in, start listening for chats
-                initChat();
+            if (modalTitle && modalBody) {
+                modalTitle.textContent = title;
+                modalBody.innerHTML = body;
+                const statusModal = new bootstrap.Modal(document.getElementById('statusModal'));
+                statusModal.show();
             } else {
-                // User is logged out, stop listening and clear chat
-                if (unsubscribeChat) {
-                    unsubscribeChat();
-                    unsubscribeChat = null;
+                console.error("Modal elements not found for display.");
+            }
+        }
+        
+        /**
+         * Saves or updates the user's profile data in Firestore.
+         * @param {object} userData - The data to save.
+         */
+        async function saveUserData(userData) {
+            if (!db || !currentUserId || currentUserId === 'anonymous') {
+                console.log("Cannot save data for unauthenticated or anonymous user.");
+                showMessage("Login Required", "Please sign in with Google to save your personalized account data.");
+                return;
+            }
+            
+            const userDocRef = doc(db, 
+                `artifacts/${APP_ID}/users/${currentUserId}/profile`, 
+                'user_data'
+            );
+
+            try {
+                await setDoc(userDocRef, userData, { merge: true });
+                console.log("User data successfully saved to Firestore.");
+            } catch (error) {
+                console.error("Error writing user data to Firestore:", error);
+                showMessage("Database Error", "Failed to save your profile data. Please try again.");
+            }
+        }
+        
+        /**
+         * Loads and displays user profile data (if any).
+         */
+        function loadUserData() {
+            if (!db || !currentUserId || currentUserId === 'anonymous') {
+                 console.log("Skipping data load for anonymous user.");
+                 return;
+            }
+
+            const userDocRef = doc(db, 
+                `artifacts/${APP_ID}/users/${currentUserId}/profile`, 
+                'user_data'
+            );
+
+            // Using onSnapshot for real-time profile updates (though simple getDoc might suffice)
+            onSnapshot(userDocRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    console.log("User Data Loaded:", data);
+                    // Update UI with loaded data if needed (e.g., last login, name)
+                } else {
+                    console.log("No profile data found, creating new profile stub.");
+                    saveUserData({
+                        created: new Date().toISOString(),
+                        lastLogin: new Date().toISOString(),
+                        email: auth.currentUser.email
+                    });
                 }
-                document.getElementById('chat-messages').innerHTML = '<div class="text-center text-muted mt-5">Please <a href="#" data-bs-toggle="modal" data-bs-target="#authModal">sign in</a> to view the community chat.</div>';
+            }, (error) => {
+                console.error("Error listening to user data:", error);
+            });
+        }
+
+
+        /**
+         * Handles Google Sign-In via popup.
+         */
+        async function signInWithGoogle() {
+            if (!auth) {
+                console.error("Firebase Auth not initialized.");
+                return;
+            }
+            const provider = new GoogleAuthProvider();
+            try {
+                const result = await signInWithPopup(auth, provider);
+                // The signed-in user info.
+                const user = result.user;
+                console.log("Google Sign-In successful for:", user.displayName);
+                
+                // Immediately save/update profile data upon sign-in
+                await saveUserData({
+                    name: user.displayName,
+                    email: user.email,
+                    photoURL: user.photoURL,
+                    lastLogin: new Date().toISOString(),
+                });
+
+                showMessage("Welcome, Commander!", 
+                    `<p>You are now signed in as <strong>${user.displayName}</strong>.</p>
+                     <p>Your account data is secured in the cloud.</p>`
+                );
+
+            } catch (error) {
+                console.error("Google Sign-In error:", error);
+                // Handle errors like popup closed by user
+                showMessage("Sign In Failed", 
+                    `<p>There was an error during Google Sign-In.</p>
+                     <p class="small text-danger">Error: ${error.message.substring(0, 100)}</p>`
+                );
+            }
+        }
+
+        /**
+         * Signs out the current user.
+         */
+        async function signOutUser() {
+            if (!auth) return;
+            try {
+                await signOut(auth);
+                console.log("User signed out.");
+                showMessage("Logout Success", "You have been successfully signed out. You can sign in again anytime.");
+                // Note: onAuthStateChanged listener handles UI updates
+            } catch (error) {
+                console.error("Sign Out Error:", error);
+                showMessage("Error", "Could not log out successfully.");
+            }
+        }
+        
+        /**
+         * Master authentication handler tied to the navbar button.
+         */
+        window.handleAuth = function() {
+            if (auth.currentUser && !auth.currentUser.isAnonymous) {
+                signOutUser();
+            } else {
+                signInWithGoogle();
+            }
+        }
+        
+        /**
+         * Updates the UI based on the current user state.
+         * @param {object | null} user - The current Firebase user object.
+         */
+        function updateAuthUI(user) {
+            const authButton = document.getElementById('authButton');
+            const welcomeMessage = document.getElementById('welcomeMessage');
+            const userIdSpan = document.getElementById('currentUserId');
+
+            if (user) {
+                currentUserId = user.uid;
+                userIdSpan.textContent = user.uid;
+                if (user.isAnonymous) {
+                    authButton.innerHTML = '<i class="fab fa-google"></i> Sign In (Anonymous)';
+                    authButton.classList.remove('btn-danger');
+                    authButton.classList.add('btn-primary-gaming');
+                    welcomeMessage.innerHTML = `Welcome back! Please sign in with Google to secure your history.`;
+                    console.log("User is signed in anonymously. UID:", user.uid);
+                } else {
+                    authButton.innerHTML = '<i class="fas fa-sign-out-alt"></i> Sign Out';
+                    authButton.classList.remove('btn-primary-gaming');
+                    authButton.classList.add('btn-danger');
+                    welcomeMessage.innerHTML = `Signed in as <strong>${user.displayName || user.email}</strong>. Welcome to the Vault!`;
+                    console.log("User is fully authenticated. UID:", user.uid);
+                    loadUserData(); // Start listening for user data after successful sign-in
+                }
+            } else {
+                currentUserId = null;
+                userIdSpan.textContent = 'N/A (Signed Out)';
+                authButton.innerHTML = '<i class="fab fa-google"></i> Sign In';
+                authButton.classList.remove('btn-danger');
+                authButton.classList.add('btn-primary-gaming');
+                welcomeMessage.innerHTML = 'Connect your Google account to save your purchase history!';
+                console.log("No user is signed in.");
+            }
+        }
+
+        /**
+         * Handles the click of a product card's Buy Now button.
+         * @param {string} productName - The name of the product purchased.
+         */
+        window.purchaseProduct = function(productName) {
+            if (!currentUserId) {
+                showMessage("Purchase Alert", 
+                    `<p>You must sign in first to complete a purchase!</p>
+                     <p>Click the <strong>Sign In</strong> button to proceed with Google.</p>`
+                );
+                return;
+            }
+
+            const isAnonymous = auth.currentUser && auth.currentUser.isAnonymous;
+            const statusText = isAnonymous 
+                ? "Your order is placed under your temporary ID and will be saved permanently if you sign in with Google."
+                : "Your order details will be saved to your purchase history.";
+
+            // Save the purchase event to a 'transactions' collection (Public path is NOT used here as this is private user data)
+            const transactionData = {
+                userId: currentUserId,
+                product: productName,
+                timestamp: new Date().toISOString(),
+                status: 'Pending',
+                isAnonymous: isAnonymous
+            };
+            
+            const transactionsColRef = collection(db, 
+                `artifacts/${APP_ID}/users/${currentUserId}`, 
+                'transactions'
+            );
+
+            // Add the document to the transactions subcollection
+            addDoc(transactionsColRef, transactionData)
+                .then(() => {
+                    showMessage("Order Placed!", 
+                        `<p>Thank you for purchasing <strong>${productName}</strong>!</p>
+                         <p>We are processing your order. ${statusText}</p>`
+                    );
+                })
+                .catch(error => {
+                    console.error("Error recording transaction:", error);
+                    showMessage("Order Error", 
+                        `<p>Failed to record your purchase in the database.</p>
+                         <p class="small text-danger">Error: ${error.message.substring(0, 100)}</p>`
+                    );
+                });
+        }
+
+
+        // --- Initialization Logic ---
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!firebaseConfig) {
+                showMessage("Configuration Error", "Firebase configuration is missing. The application cannot function without it.");
+                return;
+            }
+
+            try {
+                // Initialize Firebase
+                app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+
+                // 1. Authenticate using the custom token provided by the environment
+                if (initialAuthToken) {
+                    await signInWithCustomToken(auth, initialAuthToken);
+                } else {
+                    // Fallback to anonymous sign-in if no custom token is provided
+                    await signInAnonymously(auth);
+                }
+                
+                // 2. Set up the state change listener AFTER initial auth is done
+                onAuthStateChanged(auth, (user) => {
+                    updateAuthUI(user);
+                });
+                
+            } catch (error) {
+                console.error("Critical Firebase Initialization or Auth Error:", error);
+                showMessage("Initialization Error", 
+                    `<p>Could not connect to the database or authenticate.</p>
+                     <p class="small text-danger">Error: ${error.message.substring(0, 100)}</p>`
+                );
             }
         });
 
-        function updateUI(user) {
-            const loginBtn = document.getElementById('login-btn');
-            const userInfo = document.getElementById('user-info');
-            const userAvatar = document.getElementById('user-avatar');
-            const userName = document.getElementById('user-name');
-            
-            // Chat Inputs
-            const chatInput = document.getElementById('chat-input');
-            const sendBtn = document.getElementById('send-btn');
-            const charName = document.getElementById('char-name');
-            const charUrl = document.getElementById('char-img-url');
-            const uploadBtn = document.getElementById('upload-btn');
-            const loginAlert = document.getElementById('login-alert');
-
-            if (user) {
-                // Logged In
-                loginBtn.classList.add('d-none');
-                userInfo.classList.remove('d-none');
-                userInfo.classList.add('d-flex');
-                // Use a default avatar if one isn't provided (Email auth doesn't usually provide one immediately)
-                userAvatar.src = user.photoURL || 'https://ui-avatars.com/api/?name=' + (user.displayName || user.email || 'User') + '&background=008080&color=fff';
-                userName.textContent = user.displayName || user.email.split('@')[0];
-
-                // Enable Community Features
-                chatInput.disabled = false;
-                sendBtn.disabled = false;
-                charName.disabled = false;
-                charUrl.disabled = false;
-                uploadBtn.disabled = false;
-                loginAlert.classList.add('d-none');
-            } else {
-                // Logged Out
-                loginBtn.classList.remove('d-none');
-                userInfo.classList.add('d-none');
-                userInfo.classList.remove('d-flex');
-
-                // Disable Community Features
-                chatInput.disabled = true;
-                sendBtn.disabled = true;
-                charName.disabled = true;
-                charUrl.disabled = true;
-                uploadBtn.disabled = true;
-                loginAlert.classList.remove('d-none');
-            }
-        }
-
-        // --- Firestore Chat Logic ---
-        // Function to initialize chat listener
-        function initChat() {
-            // If already listening, don't attach another listener
-            if (unsubscribeChat) return;
-
-            // Use the global messagesRef
-            const q = query(messagesRef, orderBy("timestamp", "desc"), limit(50));
-            
-            document.getElementById('chat-messages').innerHTML = '<div class="text-center text-muted mt-5">Loading community messages...</div>';
-
-            unsubscribeChat = onSnapshot(q, (snapshot) => {
-                const chatBox = document.getElementById('chat-messages');
-                chatBox.innerHTML = ''; // Clear current
-
-                const messages = [];
-                snapshot.forEach((doc) => {
-                    messages.push(doc.data());
-                });
-                
-                if (messages.length === 0) {
-                    chatBox.innerHTML = '<div class="text-center text-muted mt-5">No messages yet. Be the first!</div>';
-                    return;
-                }
-
-                // Display newest at bottom (reverse the desc order)
-                messages.reverse().forEach(msg => {
-                    const div = document.createElement('div');
-                    div.className = 'message';
-                    
-                    // Fallback for user name
-                    const displayName = msg.user || "Anonymous";
-
-                    let contentHtml = `<div class="d-flex justify-content-between">
-                                            <strong>${escapeHtml(displayName)}</strong>
-                                            <small>${msg.timestamp ? new Date(msg.timestamp.seconds * 1000).toLocaleTimeString() : 'Just now'}</small>
-                                    </div>
-                                    <div class="mt-1">${escapeHtml(msg.text)}</div>`;
-                    
-                    if (msg.imageUrl) {
-                        contentHtml += `<img src="${escapeHtml(msg.imageUrl)}" class="message-img" alt="Shared Image">`;
-                    }
-
-                    div.innerHTML = contentHtml;
-                    chatBox.appendChild(div);
-                });
-
-                // Scroll to bottom
-                chatBox.scrollTop = chatBox.scrollHeight;
-            }, (error) => {
-                console.error("Firestore Error:", error);
-                
-                // Detailed Error Handling for the User
-                const chatBox = document.getElementById('chat-messages');
-                if (error.code === 'permission-denied' || error.code === 'mn') {
-                     chatBox.innerHTML = `
-                        <div class="alert alert-danger m-3" role="alert">
-                            <h5 class="alert-heading"><i class="fas fa-lock me-2"></i>Database Locked</h5>
-                            <p>Your Firebase Database rules are blocking the connection. To fix this:</p>
-                            <ol class="small">
-                                <li>Go to <a href="https://console.firebase.google.com/" target="_blank" class="alert-link">Firebase Console</a> > Your Project > Build > Firestore Database.</li>
-                                <li>Click the <strong>Rules</strong> tab.</li>
-                                <li>Change <code>allow read, write: if false;</code> to <br><code>allow read, write: if request.auth != null;</code></li>
-                                <li>Click <strong>Publish</strong>.</li>
-                            </ol>
-                            <button class="btn btn-sm btn-outline-danger" onclick="location.reload()">I Fixed It, Reload Page</button>
-                        </div>
-                    `;
-                } else if (error.code === 'failed-precondition') {
-                    chatBox.innerHTML = `<div class="alert alert-warning m-3">Database index missing. Check console for the link to create it.</div>`;
-                } else {
-                    chatBox.innerHTML = `<div class="text-danger text-center mt-3">Error: ${error.message}</div>`;
-                }
-            });
-        }
-
-        window.sendMessage = async () => {
-            const input = document.getElementById('chat-input');
-            const text = input.value.trim();
-            if (!text || !currentUser) return;
-
-            try {
-                await addDoc(messagesRef, {
-                    text: text,
-                    // Use email as fallback for name
-                    user: currentUser.displayName || currentUser.email.split('@')[0],
-                    uid: currentUser.uid,
-                    timestamp: serverTimestamp()
-                });
-                input.value = '';
-            } catch (e) {
-                console.error("Error sending message:", e);
-                // Trigger the same UI error if write fails
-                if (e.code === 'permission-denied') {
-                    document.getElementById('chat-messages').innerHTML = `
-                        <div class="alert alert-danger m-3" role="alert">
-                            <strong>Message Failed: Permission Denied</strong><br>
-                            Please fix your Firestore Rules in the Firebase Console to <code>allow write: if request.auth != null;</code>
-                        </div>
-                    `;
-                } else {
-                    showToast("Error sending message: " + e.message);
-                }
-            }
-        };
-
-        window.postCharacter = async () => {
-            const nameInput = document.getElementById('char-name');
-            const urlInput = document.getElementById('char-img-url');
-            const name = nameInput.value.trim();
-            const url = urlInput.value.trim();
-
-            if (!name || !url || !currentUser) {
-                showToast("Please fill in both fields.");
-                return;
-            }
-
-            try {
-                await addDoc(messagesRef, {
-                    text: `Shared a character: ${name}`,
-                    imageUrl: url,
-                    user: currentUser.displayName || currentUser.email.split('@')[0],
-                    uid: currentUser.uid,
-                    timestamp: serverTimestamp()
-                });
-                nameInput.value = '';
-                urlInput.value = '';
-                showToast("Character shared to chat!");
-            } catch (e) {
-                console.error("Error posting character:", e);
-                 if (e.code === 'permission-denied') {
-                    showToast("Permission Denied: Check Firebase Rules");
-                } else {
-                    showToast("Error posting.");
-                }
-            }
-        };
-
-        // --- UI Helper Functions ---
-        function escapeHtml(text) {
-            if (!text) return "";
-            return text
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
-        }
-
-        function showToast(message) {
-            // Simple alert fallback or custom toast could be added here
-            // For now, we use a created DOM element
-            const toast = document.createElement('div');
-            toast.style.position = 'fixed';
-            toast.style.bottom = '20px';
-            toast.style.right = '20px';
-            toast.style.background = 'var(--anime-teal-dark)';
-            toast.style.color = 'white';
-            toast.style.padding = '10px 20px';
-            toast.style.borderRadius = '5px';
-            toast.style.zIndex = '9999';
-            toast.textContent = message;
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 3000);
-        }
-    </script>
-
-    <!-- UI Logic Script (Non-Module for global scope access) -->
-    <script>
-        // Page Navigation
-        function showPage(pageId) {
-            const home = document.getElementById('home-section');
-            const community = document.getElementById('community-section');
-            const navHome = document.getElementById('nav-home');
-            const navCommunity = document.getElementById('nav-community');
-
-            if (pageId === 'home') {
-                home.style.display = 'block';
-                community.style.display = 'none';
-                navHome.classList.add('active');
-                navCommunity.classList.remove('active');
-            } else {
-                home.style.display = 'none';
-                community.style.display = 'block';
-                navHome.classList.remove('active');
-                navCommunity.classList.add('active');
-            }
-        }
-
-        // Initialize tooltips/other bootstrap logic if needed
     </script>
 </body>
 </html>
+
