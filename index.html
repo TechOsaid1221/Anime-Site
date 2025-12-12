@@ -339,11 +339,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     
     <script type="module">
+        // Using the minimum required imports
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        // NOTE: Removed signInWithCustomToken as it's for server environments
         import { getAuth, signInAnonymously, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        // NOTE: addDoc is required for purchaseProduct
-        import { getFirestore, doc, setDoc, getDoc, collection, query, onSnapshot, addDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, collection, onSnapshot, addDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         import { setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -363,12 +362,8 @@
         let auth;
         let db;
         let currentUserId = null;
-        // Using the projectId from config as APP_ID for the artifacts path
         const APP_ID = firebaseConfig.projectId; 
         
-        // Removed initialAuthToken variable as it's no longer used
-        // const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null; 
-
         // Set Firebase logging level to Debug
         setLogLevel('Debug');
 
@@ -398,7 +393,6 @@
         async function saveUserData(userData) {
             if (!db || !currentUserId || currentUserId === 'anonymous') {
                 console.log("Cannot save data for unauthenticated or anonymous user.");
-                // Removed showMessage here to prevent modal spam on every page load attempt for anonymous users
                 return;
             }
             
@@ -430,7 +424,7 @@
                 'user_data'
             );
 
-            // Using onSnapshot for real-time profile updates (though simple getDoc might suffice)
+            // Using onSnapshot for real-time profile updates 
             onSnapshot(userDocRef, (docSnap) => {
                 if (docSnap.exists()) {
                     const data = docSnap.data();
@@ -438,11 +432,14 @@
                     // Update UI with loaded data if needed (e.g., last login, name)
                 } else {
                     console.log("No profile data found, creating new profile stub.");
-                    saveUserData({
-                        created: new Date().toISOString(),
-                        lastLogin: new Date().toISOString(),
-                        email: auth.currentUser.email
-                    });
+                    // Check if auth.currentUser exists before accessing its email
+                    if(auth.currentUser) {
+                         saveUserData({
+                            created: new Date().toISOString(),
+                            lastLogin: new Date().toISOString(),
+                            email: auth.currentUser.email || 'N/A'
+                        });
+                    }
                 }
             }, (error) => {
                 console.error("Error listening to user data:", error);
@@ -570,7 +567,7 @@
                 ? "Your order is placed under your temporary ID and will be saved permanently if you sign in with Google."
                 : "Your order details will be saved to your purchase history.";
 
-            // Save the purchase event to a 'transactions' collection (Public path is NOT used here as this is private user data)
+            // Save the purchase event to a 'transactions' collection
             const transactionsColRef = collection(db, 
                 `artifacts/${APP_ID}/users/${currentUserId}/transactions`
             );
@@ -615,13 +612,12 @@
                 auth = getAuth(app);
                 db = getFirestore(app);
 
-                // Setup the state change listener first
+                // Set up the state change listener immediately
                 onAuthStateChanged(auth, (user) => {
                     updateAuthUI(user);
                 });
 
-                // Check if a user is already authenticated (from a previous session)
-                // If not authenticated, attempt anonymous sign-in for initial functionality.
+                // Check for existing user, if none, attempt anonymous sign-in
                 if (!auth.currentUser) {
                     await signInAnonymously(auth);
                 }
